@@ -1,1 +1,1 @@
-# TaberTradeSupport
+Бот для группы
