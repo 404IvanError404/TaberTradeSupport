@@ -35,11 +35,11 @@ async def process_company(message: types.Message, state: FSMContext):
     await message.bot.send_message(message.chat.id,"Отлично,теперь используйте кнопку для отправки номера телефона или введите номер в формате +X (XXX) XXX-XX-XX, чтобы наш специалист смог связаться с Вами:", reply_markup=phone_request_keyboard())
     
 async def process_phone(message: types.Message, state: FSMContext):
-    if message.contact:
-        await state.update_data(phone=message.contact.phone_number)
-        await Form.next()
-        await message.bot.send_message(message.chat.id,"Прекрасно, теперь введите, пожалуйста, номер проблемного магазина:", reply_markup=types.ReplyKeyboardRemove())
-    elif phone_pattern.match(message.text):
+    # if message.contact:
+    #     await state.update_data(phone=message.contact.phone_number)
+    #     await Form.next()
+    #     await message.bot.send_message(message.chat.id,"Прекрасно, теперь введите, пожалуйста, номер проблемного магазина:", reply_markup=types.ReplyKeyboardRemove())
+    if phone_pattern.match(message.text):
         await state.update_data(phone=message.text)
         await Form.next()
         await message.bot.send_message(message.chat.id,"Прекрасно, теперь введите, пожалуйста, номер проблемного магазина:", reply_markup=types.ReplyKeyboardRemove())
@@ -55,8 +55,8 @@ async def process_question(message: types.Message, state: FSMContext):
     user_data = await state.get_data()
     user_data['question'] = message.text
 
-    message_text = (
-        f"ФИО: {user_data['full_name']}\n"
+    group_message  = (
+        f"Новый запрос от: {user_data['full_name']}\n"
         f"Компания: {user_data['company']}\n"
         f"Телефон: {user_data['phone']}\n"
         f"Номер магазина: {user_data['shop_number']}\n"
@@ -66,7 +66,7 @@ async def process_question(message: types.Message, state: FSMContext):
     sent_message = await message.bot.send_message(message.chat.id,"Ваше обращение принято, в ближайшее время с вами свяжутся.")
     
     try:
-        sent_admin_message = await message.bot.send_message(chat_id=ADMIN_GROUP_ID, text=message_text)
+        sent_admin_message = await message.bot.send_message(chat_id=ADMIN_GROUP_ID, text=group_message )
     except Exception as e:
         await logging.error(f"Ошибка: {e}")
 

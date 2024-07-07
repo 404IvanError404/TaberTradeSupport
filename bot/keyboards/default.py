@@ -13,8 +13,9 @@ def no_contact_markup(message_id):
     keyboard.add(no_contact_button)
     return keyboard
 
-def contact_yes(message_id):
+def reply_keyboard():
     keyboard = InlineKeyboardMarkup()
-    no_contact_button = InlineKeyboardButton("Cвязались", callback_data=f"yes_contact:{message_id}")
-    keyboard.add(no_contact_button)
+    keyboard.add(InlineKeyboardButton("Ответил", callback_data="replied"))
     return keyboard
+
+
